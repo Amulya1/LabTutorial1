@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="GoogleMapsDirectionWeather">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+    <marquee><h1>ENTER THE STRATING AND DESTINATION PLACES AND CLICK ON BUTTON TO GET DIRECTIONS</h1></marquee>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
+    <script>
+
+    </script>
+    <style>
+        #map-canvas {
+            width: 600px;
+            height: 600px;
+
+        }
+        .weatherModule {
+            background: #f2f2f2;
+            height: 150px;
+            width: 250px;
+            border: 1px dashed #ccc;
+            padding: 1em;
+        }
+    </style>
+</head>
+<body style="background: azure";>
+<div class="wrapp" ng-controller="googlemapoutput">
+<div style="margin-left: 50%">
+    <input type="button" value="Logout" align="200px" onclick="window.location.href='LoginPage.html'"/>
+
+</div>
+
+    <div class="row">
+
+        <b>Strating Point</b> : <input type="text"  ng-model="startlocation" id="startlocation"/>
+        <b>Destination Point</b>  :<input type="text"  ng-model="endlocation" id="endlocation" /><br><br/>
+        <button id="btn" ng-click="calcRoute();getWeather_Source();getWeather_Dest()">
+            Click to get the Direction
+        </button>
+        <br/></br>
+    </div>
+    <div id="map-canvas" style="height: 400px;"></div>
+    <div class="weatherModule">
+        <p id="Source">weather details</p>
+        <p id="Destination">weather details</p>
+    </div>
+</div>
+</body>
+</html>
+
+<!--GOOGLE MAP DIRECTIONS-->
+<script>
+    angular.module('GoogleMapsDirectionWeather', [])
+            .controller('googlemapoutput', function ($scope,$http) {
+                var map;
+                var mapOptions;
+                var directionsDisplay = new google.maps.DirectionsRenderer({
+                    draggable: true
+                });
+                var directionsService = new google.maps.DirectionsService();
+
+                $scope.initialize = function () {
+                    var pos = new google.maps.LatLng(0, 0);
+                    var mapOptions = {
+                        zoom: 3,
+                        center: pos
+                    };
+
+                    map = new google.maps.Map(document.getElementById('map-canvas'),
+                            mapOptions);
+                };
+//                CONFIGURED THE ROUTE
+                $scope.calcRoute = function () {
+                    var end = document.getElementById('endlocation').value;
+                    var start = document.getElementById('startlocation').value;
+
+                    var request = {
+                        origin: start,
+                        destination: end,
+                        travelMode: google.maps.TravelMode.DRIVING
+                    };
+
+                    var address = end;
+                    geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({
+                        'address': address
+                    }, function(results, status) {
+                        var lat=results[0].geometry.location.lat();
+                        var lng=results[0].geometry.location.lng();
+                        console.log(lat);
+                    });
+
+
+                    directionsService.route(request, function (response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setMap(map);
+                            directionsDisplay.setDirections(response);
+                            console.log(status);
+                        }
+
+                    });
+
+                };
+//                CONFIGURED WEATHER FRO SOURCE POINT
+                $scope.getWeather_Source = function() {
+                    var source=document.getElementById('startlocation').value;
+
+                    console.log(source.toString());
+                    $http.get('http://api.openweathermap.org/data/2.5/weather?q='+source+'&appid=379ebdd71e548870edfa66f91e5eeecc').success(function(data) {
+                        console.log(data);
+                        temp = data.main.temp;
+                        var fh=$scope.kelvintoFahrenheit(temp.toString()).toFixed(2);
+
+
+                        var ic=data.weather[0].icon;
+                        console.log(ic.toString());
+
+                        var icon_url="http://openweathermap.org/img/w/"+ic+".png";
+                        console.log(icon_url.toString());
+                        var desc = data.weather[0].description;
+                        console.log(desc.toString());
+                        //<p>Source temperature</p>
+                        document.getElementById('Source').innerHTML="SourceTemp " + fh + " &deg; F and " + desc;
+                        document.getElementById('Source1').innerHTML="<img src='" + icon_url + "'/>";
+
+
+
+                    })
+                }
+//                CONFIGURED WEATHER FOR DESTINATION POINT
+                $scope.getWeather_Dest = function() {
+
+                    var destination=document.getElementById('endlocation').value;
+
+                    $http.get('http://api.openweathermap.org/data/2.5/weather?q='+destination+'&appid=fe8bd79a2a1b8bf2f7abcc7bb4314b91').success(function(data) {
+                        console.log(data);
+                        temp = data.main.temp;
+
+                        var fh=$scope.kelvintoFahrenheit(temp.toString()).toFixed(2);
+                        var ic=data.weather[0].icon;
+                        console.log(ic.toString());
+
+
+                        var icon_url="http://openweathermap.org/img/w/"+ic+".png";
+                        console.log(icon_url.toString());
+                        var desc = data.weather[0].description;
+                        console.log(desc.toString());
+                        //<p>Destination temperature</p>
+                        document.getElementById('Destination').innerHTML="DestinationTemp " + fh + " &deg; F and " + desc;
+                        document.getElementById('Destination1').innerHTML="<img src='" + icon_url + "'/>";
+
+
+                    })
+                }
+                $scope.kelvintoFahrenheit=function(kelvin){
+
+                    return (kelvin - 273.15) * 1.8 + 32;
+
+                }
+
+                google.maps.event.addDomListener(window, 'load', $scope.initialize);
+
+            });
+
+
+
+</script>

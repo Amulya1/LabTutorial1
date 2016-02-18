@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+
+    <script>
+
+       function logIn()
+       {
+           if (typeof(Storage) !== "undefined") {
+               var input1= localStorage.getItem("userName");
+               var input2=localStorage.getItem("password");
+               console.log(input1);
+               console.log(input2);
+           }
+
+           if(input1==document.getElementById("userName1").value && input2==document.getElementById("password1").value)
+           {
+               window.location.href='HomePage.html';
+              // <button style="background-color: aqua;"  type="button" onclick="window.location.href='HomePage.html'"><i>LOGIN</i> </button>
+           }
+           else
+           {
+               alert("ENTER CORRECT CREDENTIALS");
+           }
+
+       }
+
+    </script>
+
+</head>
+
+<body style="background: azure"; >
+<div>
+    <img src="loginimage.jpg">
+</div>
+
+<p style="color: red;">ENTER THE DETAILS TO LOGIN OR CLICK REGISTER TO CREATE ACCOUNT <br/><br/></p>
+<b>Username</b> : <input type="text" name="userName" id="userName1"><br/><br/>
+<b>Password</b> : <input type="password" name="password" id="password1"><br/><br/>
+<button style="background-color: aqua;"  type="button" onclick=logIn();"window.location.href='HomePage.html'"><i>LOGIN</i> </button>
+<button style="background-color: aqua;" type="button" onclick="window.location.href='RegisterPage.html'"><i>REGISTER</i> </button>
+
+</body>
+</html>
