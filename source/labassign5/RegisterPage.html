@@ -1,0 +1,63 @@
+<!--TOOK THE REFERENCE OF PREVIOUS ASSIGNMENT TO CREATE AN ACCOUNT FOR USER-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+</head>
+<body style="background: azure";>
+<div align="center"><h1>ENTER THE DETAILS TO REGISTER</h1></div>
+<div align="center" style="padding-top: 100px">
+    <table>
+        <tr>
+            <th><b>Name</b></th>
+            <td><input type="text" name="Name" id="Name"/></td>
+        </tr>
+
+        <tr>
+            <th><b>UserName</b></th>
+            <td><input type="text" name="userName" id="userName"/></td>
+        </tr>
+        <tr>
+            <th><b>Set Password</b></th>
+            <td><input type="password" name="password" id="password"/><br><br/></td>
+        </tr>
+        <tr>
+            <th><b>Confirm Password</b></th>
+            <td><input type="password" name="password" id="password2"/><br><br/></td>
+        </tr>
+
+        <tr>
+            <th><b>EMail</b></th>
+            <td><input type="email" name="email" id="email"/></td>
+        </tr>
+        <tr>
+            <th><b>Phone Number</b></th>
+            <td><input type="number" name="phonenumber" id="phonenumber1"/><br><br/></td>
+        </tr>
+
+    </table>
+</div>
+<div style="padding-left: 700px;">
+    <button style="background-color: aqua;"type="button" onclick="register()"><i>SIGNUP</i> </button></div>
+</body>
+</html>
+<script>
+    function register()
+    {
+        if(document.getElementById("password").value ==  document.getElementById("password2").value &&
+                document.getElementById("userName").value.length>0 && document.getElementById("Name").value.length>0) {
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem("userName", document.getElementById("userName").value);
+                localStorage.setItem("password", document.getElementById("password").value);
+                window.location.href = 'LoginPage.html'
+            }
+            else {
+                alert("FIELDS ARE MANDATORY AND THE PASSWORDS SHOULD ALSO MATCH");
+            }
+        }
+        else {
+            alert(' FIELDS ARE MANDATORY AND THE PASSWORDS SHOULD ALSO MATCH');
+        }
+    }
+</script>

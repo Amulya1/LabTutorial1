@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="406260252730-eg57gkkd1vs2mrd58m0h1mj4eitcesva.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+</head>
+<body style="background: azure";>
+<marquee style="background-color: aliceblue"><h1>SIGN UP TO VIEW YOUR CURRENT LOCATION AND CURRENCY VALUE IN INDIA</h1></marquee><br><br/>
+<!--<img src="currency.jpg" style="width: 600px; height: 600px;">-->
+<!--<link href="mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 480px)" />-->
+
+<b>Username</b> : <input type="text" name="userName" id="userName1"><br/><br/>
+<b>Password</b> : <input type="password" name="password" id="password1"><br/><br/>
+
+<button style="background-color: aqua;"  type="button" onclick= logIn();"window.location.href='SignInPage.html'"><i>LOGIN</i> </button>
+<button style="background-color: aqua;" type="button" onclick="window.location.href='RegisterPage.html'"><i>SIGNUP</i> </button>
+
+<br><br/><br><br/>
+<h3>YOU CAN ALSO SIGN IN WITH GOOGLE BY CLICKING ON SIGN-IN</h3>
+<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" ></div>
+<script>
+    function onSignIn(googleUser) {
+
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId());
+        console.log("Name: " + profile.getName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+        redirect();
+    };
+    function redirect()
+    {
+        window.location="http://localhost:63342/Labassign5/SignInPage.html";
+
+    }
+
+</script>
+</body>
+</html>
+<!--USED THE PREVIOUS ASSIGNMENT REFERENCE TO VERIFY THE USER-->
+<script>
+
+    function logIn()
+    {
+        if (typeof(Storage) !== "undefined") {
+            var input1= localStorage.getItem("userName");
+            var input2=localStorage.getItem("password");
+            console.log(input1);
+            console.log(input2);
+        }
+
+        if(input1==document.getElementById("userName1").value && input2==document.getElementById("password1").value)
+        {
+            window.location.href='SignInPage.html';
+                    }
+        else
+        {
+            alert("ENTER CORRECT CREDENTIALS");
+        }
+
+    }
+
+</script>
+

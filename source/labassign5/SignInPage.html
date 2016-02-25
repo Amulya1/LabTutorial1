@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MashupPage</title>
+</head>
+
+<body style="background: azure";>
+<h1 style="background: #ff9022; text-align: center">KNOW YOUR PRESENT LOCATION AND COUNTRY</h1><br><br/>
+
+<button style="background-color: aqua;" onclick="getLocation()">CLICK TO PROCEED</button>
+<div style="padding-left: 900px;">
+<button style="background-color: aqua;"  type="button" onclick=Logout()><i>LOGOUT</i> </button></div>
+<p>YOUR LOCATION LONGITUDE AND LATITUDE ARE AS FOLLOWS:</p>
+<p id= "details"></p>
+<p id="country"></p>
+<p id="money"></p>
+
+<!--<a href="http://localhost:63342/Labassign5/SignInPage.html" onclick="signOut();" class="btn btn-primary" >Logout</a>&ndash;&gt;-->
+
+</body>
+</html>
+
+<!--user logging out from the gmail-->
+<script>
+    function Logout() {
+        window.location.href='LoginPage.html';
+//        var auth2 = gapi.auth2.getAuthInstance();
+//        auth2.Logout().then(function () {
+//            console.log('logout from the gmail');
+//        });
+    }
+</script>
+
+<!--Getting the current and currency details-->
+<script>
+    var abc = document.getElementById("details");
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            abc.innerHTML = "Geolocation is not being supported in browser,when trying to run.";
+        }
+    }
+    function showPosition(position) {
+        abc.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude
+        lat=position.coords.latitude;
+        console.log(lat);
+        lon=position.coords.longitude;
+
+        if (window.XMLHttpRequest){
+            var curr = new XMLHttpRequest();
+            var loc = new XMLHttpRequest();
+            curr.addEventListener("load", function() {var response = JSON.parse(curr.responseText);
+                console.log(response);
+                var currency = response.quotes.USDINR;
+                console.log(currency);
+                document.getElementById("money").innerHTML="YOUR ONE CURRENCY VALUE IN INDIA IS(in rupees)  "  +currency;
+            }, false);
+            curr.addEventListener("error", function(){}, false);
+            console.log(lat);
+            curr.open("GET","http://www.apilayer.net/api/live?access_key=ea8c47c3afa2f436eba15ab7935801cd&format=1%22", true);
+            curr.send();
+
+        loc.addEventListener("load", function() {
+            var response2 = JSON.parse(loc.responseText);
+
+            console.log(response2);
+            var address = response2.results[0].address_components[6].long_name;
+            console.log(address);
+            document.getElementById("country").innerHTML="YOUR PRESENT LOCATION IS In "+address;
+                    }, false);
+
+        loc.addEventListener("error", function(){}, false);
+        console.log(lat);
+
+        loc.open("GET","http://maps.googleapis.com/maps/api/geocode/json?latlng=39.0288,-94&sensor=true", true);
+
+        loc.send();}
+
+    else{
+                alert("Unable to fetch the location and weather data.");
+            }
+        }
+
+</script>
+
