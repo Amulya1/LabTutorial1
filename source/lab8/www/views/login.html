@@ -1,0 +1,15 @@
+
+<ion-view view-title="WEATHER" ng-app="starter" ng-controller="getweather">
+  <ion-content style="background: azure";>
+      <div align="center"><h1>You can type a city name and get started..</h1></div><br><br>
+      <div align="center";style="background: azure";><p>Enter the desired City:</p></div>
+   <div class="list list-inset";align="center">
+<!--      <div align="center"><p>Enter the desired City:</p></div>-->
+      <input type="text" placeholder="CITY NAME" id="cityname"><br>
+        
+      
+      <button on-touch="onTap()" class="button" ng-click="getdata()" style="background: azure";>GET DETAILS</button>
+      </div>
+      </ion-content>
+</ion-view>
+ 
